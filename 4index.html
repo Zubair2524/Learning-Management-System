@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAR - Shaigan's Learning Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+        @keyframes rainbow-glow {
+            0% { border-color: red; box-shadow: 0 0 10px red; }
+            14% { border-color: orange; box-shadow: 0 0 10px orange; }
+            28% { border-color: yellow; box-shadow: 0 0 10px yellow; }
+            42% { border-color: green; box-shadow: 0 0 10px green; }
+            57% { border-color: blue; box-shadow: 0 0 10px blue; }
+            71% { border-color: indigo; box-shadow: 0 0 10px indigo; }
+            85% { border-color: violet; box-shadow: 0 0 10px violet; }
+            100% { border-color: red; box-shadow: 0 0 10px red; }
+        }
+        .rainbow-glow {
+            animation: rainbow-glow 5s linear infinite;
+            border: 4px solid;
+            border-radius: 8px;
+        }
+        @media (max-width: 640px) {
+            .container { padding: 1rem; }
+            .book { margin-bottom: 1rem; }
+            .grid { grid-template-columns: 1fr; }
+            button { width: 100%; margin-top: 0.5rem; }
+            input[type="radio"] { transform: scale(1.5); margin-right: 0.5rem; }
+            label { font-size: 1.1rem; }
+        }
+        @media (min-width: 641px) {
+            .container { padding: 2rem; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+            button { width: auto; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Login Page -->
+    <div id="loginPage" class="container flex items-center justify-center min-h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h1 class="text-3xl font-bold text-center mb-6">STAR LMS - Login</h1>
+            <input type="email" id="loginEmail" class="w-full p-2 mb-4 border rounded" placeholder="Email">
+            <input type="password" id="loginPassword" class="w-full p-2 mb-4 border rounded" placeholder="Password">
+            <button id="loginBtn" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500 transition-all">Login</button>
+        </div>
+    </div>
+
+    <!-- Registration Page -->
+    <div id="registrationPage" class="container flex items-center justify-center min-h-screen hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h1 class="text-3xl font-bold text-center mb-6">STAR LMS - Register</h1>
+            <input type="text" id="fullName" class="w-full p-2 mb-4 border rounded" placeholder="Full Name">
+            <input type="text" id="designation" class="w-full p-2 mb-4 border rounded" placeholder="Designation">
+            <input type="text" id="team" class="w-full p-2 mb-4 border rounded" placeholder="Team/Department">
+            <input type="text" id="baseCity" class="w-full p-2 mb-4 border rounded" placeholder="Base City">
+            <input type="date" id="date" class="w-full p-2 mb-4 border rounded">
+            <input type="email" id="regEmail" class="w-full p-2 mb-4 border rounded" placeholder="Email">
+            <input type="text" id="cellNumber" class="w-full p-2 mb-4 border rounded" placeholder="Cell Number">
+            <button id="registerBtn" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500 transition-all">Register</button>
+        </div>
+    </div>
+
+    <!-- Library Page -->
+    <div id="libraryPage" class="container py-8 hidden">
+        <h1 class="text-4xl font-bold text-center mb-8">STAR LMS - Library</h1>
+        <input type="text" id="searchBar" class="w-full p-2 mb-6 border rounded" placeholder="Search for a book...">
+        <div id="bookShelf" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Self-Discipline Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Self-Discipline</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg cursor-pointer" data-book="atomic-habits">
+                        <img src="1a.png" alt="Atomic Habits" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Atomic Habits</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-power-of-habit">
+                        <img src="aa1.png" alt="The Power of Habit" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Power of Habit</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="deep-work">
+                        <img src="aa1.png" alt="Deep Work" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Deep Work</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Career Growth Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Career Growth</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg cursor-pointer" data-book="7-habits">
+                        <img src="2a.png" alt="The 7 Habits" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The 7 Habits of Highly Effective People</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg cursor-pointer" data-book="win-friends">
+                        <img src="3a.png" alt="How to Win Friends" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">How to Win Friends and Influence People</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="lean-in">
+                        <img src="aa1.png" alt="Lean In" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Lean In</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Self-Belief and Belief Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Self-Belief and Belief</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg cursor-pointer" data-book="self-confidence">
+                        <img src="4a.png" alt="The Power of Self-Confidence" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Power of Self-Confidence</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg cursor-pointer" data-book="badass">
+                        <img src="5a.png" alt="You Are a Badass" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">You Are a Badass</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-confidence-code">
+                        <img src="aa1.png" alt="The Confidence Code" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Confidence Code</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Soft Skills Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Soft Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="crucial-conversations">
+                        <img src="aa1.png" alt="Crucial Conversations" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Crucial Conversations</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="never-split-the-difference">
+                        <img src="aa1.png" alt="Never Split the Difference" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Never Split the Difference</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-art-of-communicating">
+                        <img src="aa1.png" alt="The Art of Communicating" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Art of Communicating</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Management Skills Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Management Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-one-minute-manager">
+                        <img src="aa1.png" alt="The One Minute Manager" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The One Minute Manager</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="drive">
+                        <img src="aa1.png" alt="Drive" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Drive</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="radical-candor">
+                        <img src="aa1.png" alt="Radical Candor" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Radical Candor</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Leadership Skills Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Leadership Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="leaders-eat-last">
+                        <img src="aa1.png" alt="Leaders Eat Last" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Leaders Eat Last</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-21-irrefutable-laws">
+                        <img src="aa1.png" alt="The 21 Irrefutable Laws of Leadership" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The 21 Irrefutable Laws of Leadership</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="dare-to-lead">
+                        <img src="aa1.png" alt="Dare to Lead" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Dare to Lead</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Communication Skills Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Communication Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="talk-like-ted">
+                        <img src="aa1.png" alt="Talk Like TED" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Talk Like TED</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="made-to-stick">
+                        <img src="aa1.png" alt="Made to Stick" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Made to Stick</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-quick-and-easy-way">
+                        <img src="aa1.png" alt="The Quick and Easy Way to Effective Speaking" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Quick and Easy Way to Effective Speaking</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Emotional Intelligence Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Emotional Intelligence</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="emotional-intelligence">
+                        <img src="aa1.png" alt="Emotional Intelligence" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Emotional Intelligence</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="empathy">
+                        <img src="aa1.png" alt="Empathy" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Empathy</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="social-intelligence">
+                        <img src="aa1.png" alt="Social Intelligence" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Social Intelligence</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Negotiation Skills Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Negotiation Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="getting-to-yes">
+                        <img src="aa1.png" alt="Getting to Yes" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Getting to Yes</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="bargaining-for-advantage">
+                        <img src="aa1.png" alt="Bargaining for Advantage" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Bargaining for Advantage</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="influence">
+                        <img src="aa1.png" alt="Influence" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Influence</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Teamwork and Collaboration Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Teamwork and Collaboration</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-five-dysfunctions">
+                        <img src="aa1.png" alt="The Five Dysfunctions of a Team" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Five Dysfunctions of a Team</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="collaboration">
+                        <img src="aa1.png" alt="Collaboration" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Collaboration</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="team-of-teams">
+                        <img src="aa1.png" alt="Team of Teams" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Team of Teams</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Personal Branding Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Personal Branding</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="personal-branding">
+                        <img src="aa1.png" alt="Personal Branding" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Personal Branding</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="brand-yourself">
+                        <img src="aa1.png" alt="Brand Yourself" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Brand Yourself</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-brand-called-you">
+                        <img src="aa1.png" alt="The Brand Called You" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Brand Called You</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Time Management Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Time Management</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="getting-things-done">
+                        <img src="aa1.png" alt="Getting Things Done" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Getting Things Done</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="eat-that-frog">
+                        <img src="aa1.png" alt="Eat That Frog!" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Eat That Frog!</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-80-20-principle">
+                        <img src="aa1.png" alt="The 80/20 Principle" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The 80/20 Principle</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Customer Service Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Customer Service</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="raving-fans">
+                        <img src="aa1.png" alt="Raving Fans" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Raving Fans</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-customer-rules">
+                        <img src="aa1.png" alt="The Customer Rules" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Customer Rules</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="delivering-happiness">
+                        <img src="aa1.png" alt="Delivering Happiness" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Delivering Happiness</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Decision Making Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Decision Making</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="thinking-fast-and-slow">
+                        <img src="aa1.png" alt="Thinking, Fast and Slow" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Thinking, Fast and Slow</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="decisive">
+                        <img src="aa1.png" alt="Decisive" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Decisive</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="blink">
+                        <img src="aa1.png" alt="Blink" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Blink</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Problem Solving Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Problem Solving</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="a-whack-on-the-side">
+                        <img src="aa1.png" alt="A Whack on the Side of the Head" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">A Whack on the Side of the Head</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="problem-solving-101">
+                        <img src="aa1.png" alt="Problem Solving 101" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Problem Solving 101</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-art-of-problem-solving">
+                        <img src="aa1.png" alt="The Art of Problem Solving" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Art of Problem Solving</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Stress Management Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Stress Management</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-upside-of-stress">
+                        <img src="aa1.png" alt="The Upside of Stress" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Upside of Stress</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="don-t-sweat-the-small-stuff">
+                        <img src="aa1.png" alt="Don't Sweat the Small Stuff" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Don't Sweat the Small Stuff</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="burnout">
+                        <img src="aa1.png" alt="Burnout" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Burnout</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Creativity and Innovation Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Creativity and Innovation</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-innovator-s-dilemma">
+                        <img src="aa1.png" alt="The Innovator's Dilemma" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Innovator's Dilemma</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="creative-confidence">
+                        <img src="aa1.png" alt="Creative Confidence" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Creative Confidence</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="steal-like-an-artist">
+                        <img src="aa1.png" alt="Steal Like an Artist" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Steal Like an Artist</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Adaptability Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Adaptability</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="who-moved-my-cheese">
+                        <img src="aa1.png" alt="Who Moved My Cheese?" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Who Moved My Cheese?</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="antifragile">
+                        <img src="aa1.png" alt="Antifragile" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Antifragile</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="adapt">
+                        <img src="aa1.png" alt="Adapt" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Adapt</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Ethics and Integrity Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Ethics and Integrity</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-speed-of-trust">
+                        <img src="aa1.png" alt="The Speed of Trust" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Speed of Trust</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="lying">
+                        <img src="aa1.png" alt="Lying" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Lying</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-ethics-of-excellence">
+                        <img src="aa1.png" alt="The Ethics of Excellence" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Ethics of Excellence</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Financial Literacy Section -->
+            <div class="col-span-full">
+                <h2 class="text-2xl font-semibold mb-4">Financial Literacy</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="rich-dad-poor-dad">
+                        <img src="aa1.png" alt="Rich Dad Poor Dad" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Rich Dad Poor Dad</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="the-millionaire-next-door">
+                        <img src="aa1.png" alt="The Millionaire Next Door" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">The Millionaire Next Door</h3>
+                    </div>
+                    <div class="book bg-white p-4 rounded-lg shadow-lg" data-book="think-and-grow-rich">
+                        <img src="aa1.png" alt="Think and Grow Rich" class="w-full h-48 object-cover mb-2">
+                        <h3 class="text-lg font-semibold">Think and Grow Rich</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Summary Page -->
+    <div id="summaryPage" class="container py-8 hidden">
+        <h1 id="summaryTitle" class="text-3xl font-bold mb-6"></h1>
+        <div id="summarySlides" class="bg-white p-6 rounded-lg shadow-lg">
+            <!-- Slides will be dynamically populated -->
+        </div>
+        <div class="flex justify-between mt-4">
+            <button id="firstSlideBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">First</button>
+            <button id="prevSlideBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">Previous</button>
+            <button id="nextSlideBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">Next</button>
+            <button id="lastSlideBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">Last</button>
+            <button id="homeBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">Home</button>
+        </div>
+        <div id="stopwatch" class="mt-4 text-lg font-semibold">Time: 00:00</div>
+        <button id="quizBtn" class="mt-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500 hidden">Let's Check Your Understanding</button>
+    </div>
+
+    <!-- Quiz Page -->
+    <div id="quizPage" class="container py-8 hidden">
+        <h1 id="quizTitle" class="text-3xl font-bold mb-6"></h1>
+        <div id="quizQuestion" class="bg-white p-6 rounded-lg shadow-lg">
+            <!-- Questions will be dynamically populated -->
+        </div>
+        <div id="quizStopwatch" class="mt-4 text-lg font-semibold">Time: 00:00</div>
+    </div>
+
+    <!-- Score Card Page -->
+    <div id="scorePage" class="container py-8 hidden">
+        <h1 class="text-3xl font-bold mb-6">Your Results</h1>
+        <div id="scoreCard" class="bg-white p-6 rounded-lg shadow-lg"></div>
+        <div class="flex justify-between mt-4">
+            <button id="downloadPdfBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">Download PDF</button>
+            <button id="answerCheckBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">Check Answers</button>
+            <button id="scoreHomeBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">Home</button>
+        </div>
+    </div>
+
+    <!-- Answer Check Page -->
+    <div id="answerCheckPage" class="container py-8 hidden">
+        <h1 class="text-3xl font-bold mb-6">Answer Review</h1>
+        <div id="answerReview" class="bg-white p-6 rounded-lg shadow-lg"></div>
+        <button id="answerHomeBtn" class="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500">Home</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Data structures
+            const books = {
+                'atomic-habits': {
+                    title: 'Atomic Habits',
+                    category: 'Self-Discipline',
+                    thumbnail: '1a.png',
+                    summaries: [
+                        { heading: 'Small Changes, Big Results', content: 'James Clear’s *Atomic Habits* introduces the transformative power of small, incremental changes. By focusing on tiny adjustments to daily routines, you can achieve remarkable results over time. Clear emphasizes that habits are the compound interest of self-improvement, where consistent small actions lead to exponential growth. The book provides a framework for understanding how habits shape your life and offers practical strategies to build positive habits and break negative ones, setting the foundation for lasting personal growth.' },
+                        { heading: 'Understanding the Habit Loop', content: 'The habit loop—cue, craving, response, and reward—is the core mechanism behind habit formation. Cues trigger a desire, which leads to an action and a reward that reinforces the behavior. By understanding this cycle, you can intentionally design habits that stick. Clear illustrates how to identify triggers in your environment and pair them with desired actions to create sustainable routines, making habit-building a deliberate and scientific process.' },
+                        { heading: 'Making Habits Stick', content: 'To make habits stick, Clear suggests making them easy, attractive, and satisfying. Simplify tasks to reduce friction, use incentives to make actions appealing, and ensure rewards feel fulfilling. For example, reducing steps to start a workout or linking a habit to an enjoyable activity increases adherence. This approach leverages human psychology to make positive behaviors more intuitive and sustainable over time.' },
+                        { heading: 'The 1% Better Philosophy', content: 'The 1% better every day philosophy underscores the power of marginal gains. Clear explains that improving by just 1% daily leads to significant compounding effects over months or years. For instance, small changes like reading one page a day can lead to completing multiple books annually. This principle encourages patience and persistence, focusing on progress rather than perfection in habit-building.' },
+                        { heading: 'Breaking Bad Habits', content: 'Breaking bad habits requires making them difficult, unattractive, and unsatisfying. Clear advises restructuring your environment to increase friction for undesirable behaviors, such as removing junk food from your home to deter snacking. By inverting the habit loop, you can weaken the cues and rewards that sustain bad habits, making it easier to replace them with positive alternatives.' },
+                        { heading: 'Environment Shapes Behavior', content: 'Your environment plays a critical role in shaping behavior. Clear highlights that small changes in your surroundings—like placing running shoes by the door—can prompt desired actions. By designing an environment that supports your goals, you reduce reliance on willpower and make habits automatic. This strategy aligns your surroundings with your aspirations, creating a seamless path to success.' },
+                        { heading: 'Tracking Your Progress', content: 'Tracking habits fosters accountability and provides visual proof of progress. Clear recommends using tools like habit trackers or journals to monitor consistency, which reinforces motivation. For example, marking an “X” on a calendar for each day you complete a habit creates a chain you don’t want to break, turning small actions into a powerful routine.' },
+                        { heading: 'Identity-Based Habits', content: 'Identity-based habits focus on becoming the type of person you aspire to be. Instead of setting goals, Clear advises adopting the identity of someone who embodies the habit (e.g., “I’m a reader” rather than “I’ll read a book”). By aligning actions with your desired identity, you create intrinsic motivation, making habits a natural extension of who you are.' },
+                        { heading: 'Handling Setbacks', content: 'Setbacks are inevitable, but Clear emphasizes resilience in habit formation. Rather than aiming for perfection, focus on consistency by never missing two days in a row. This “don’t break the chain” mentality helps recover from lapses quickly, ensuring long-term progress. Clear’s approach reframes setbacks as learning opportunities to refine your habits.' },
+                        { heading: 'Achieving Long-Term Goals', content: 'Applying habits to long-term goals involves aligning small actions with big aspirations. Clear suggests breaking down goals into daily habits, such as writing 500 words daily to complete a novel. By focusing on systems rather than outcomes, you create a sustainable path to success, ensuring habits drive meaningful, lasting change.' }
+                    ],
+                    quiz: [
+                        { question: 'What is the main idea of *Atomic Habits*?', options: ['Achieve big goals quickly', 'Small changes lead to big results', 'Focus on perfection', 'Avoid habits entirely'], answer: 'Small changes lead to big results' },
+                        { question: 'What are the components of the habit loop?', options: ['Plan, Action, Result', 'Cue, Craving, Response, Reward', 'Goal, Effort, Success', 'Trigger, Behavior, Outcome'], answer: 'Cue, Craving, Response, Reward' },
+                        { question: 'How can you make habits stick?', options: ['Make them complex', 'Make them easy, attractive, satisfying', 'Avoid rewards', 'Increase friction'], answer: 'Make them easy, attractive, satisfying' },
+                        { question: 'What does the 1% better every day philosophy emphasize?', options: ['Instant success', 'Compounding improvement', 'Large changes', 'Avoiding effort'], answer: 'Compounding improvement' },
+                        { question: 'How can you break a bad habit?', options: ['Make it easy', 'Make it difficult, unattractive, unsatisfying', 'Increase rewards', 'Ignore it'], answer: 'Make it difficult, unattractive, unsatisfying' },
+                        { question: 'What role does environment play in habits?', options: ['No impact', 'Shapes behavior significantly', 'Only affects mood', 'Prevents habit formation'], answer: 'Shapes behavior significantly' },
+                        { question: 'Why is habit tracking effective?', options: ['Increases complexity', 'Provides visual progress', 'Reduces motivation', 'Eliminates cues'], answer: 'Provides visual progress' },
+                        { question: 'What are identity-based habits?', options: ['Setting large goals', 'Aligning actions with desired identity', 'Focusing on outcomes', 'Avoiding change'], answer: 'Aligning actions with desired identity' },
+                        { question: 'How should you handle setbacks in habit formation?', options: ['Aim for perfection', 'Never miss two days in a row', 'Give up after failure', 'Ignore them'], answer: 'Never miss two days in a row' },
+                        { question: 'What is the focus for achieving long-term goals?', options: ['Outcomes only', 'Daily systems and habits', 'Avoiding planning', 'Large actions'], answer: 'Daily systems and habits' },
+                        { question: 'What is an example of a cue in the habit loop?', options: ['Feeling satisfied', 'A morning alarm', 'Completing a task', 'Achieving a goal'], answer: 'A morning alarm' },
+                        { question: 'How can you make a habit attractive?', options: ['Link it to an unpleasant task', 'Pair it with an enjoyable activity', 'Increase difficulty', 'Avoid rewards'], answer: 'Pair it with an enjoyable activity' },
+                        { question: 'What is the benefit of small daily improvements?', options: ['Immediate results', 'Compounding growth over time', 'No effort required', 'Avoiding change'], answer: 'Compounding growth over time' },
+                        { question: 'How can you deter a bad habit like snacking?', options: ['Keep snacks accessible', 'Remove junk food from home', 'Reward snacking', 'Track snacking'], answer: 'Remove junk food from home' },
+                        { question: 'How does environment support habits?', options: ['By increasing willpower', 'By making habits automatic', 'By creating obstacles', 'By reducing cues'], answer: 'By making habits automatic' },
+                        { question: 'What tool does Clear recommend for accountability?', options: ['Habit tracker', 'Goal planner', 'Social media', 'To-do list'], answer: 'Habit tracker' },
+                        { question: 'What is an example of an identity-based habit?', options: ['Setting a sales target', 'Becoming a reader', 'Planning a project', 'Achieving a degree'], answer: 'Becoming a reader' },
+                        { question: 'How should you recover from missing a habit?', options: ['Start over', 'Resume immediately', 'Wait a week', 'Give up'], answer: 'Resume immediately' },
+                        { question: 'What does Clear prioritize over goals?', options: ['Outcomes', 'Systems', 'Rewards', 'Cues'], answer: 'Systems' },
+                        { question: 'What is the compound interest of self-improvement?', options: ['Quick wins', 'Daily habits', 'Large efforts', 'Avoiding change'], answer: 'Daily habits' }
+                    ]
+                },
+                '7-habits': {
+                    title: 'The 7 Habits of Highly Effective People',
+                    category: 'Career Growth',
+                    thumbnail: '2a.png',
+                    summaries: [
+                        { heading: 'Taking Responsibility', content: 'Stephen Covey’s *The 7 Habits of Highly Effective People* begins with the principle of proactivity. This habit emphasizes taking responsibility for your life by focusing on what you can control—your actions, attitudes, and choices. Instead of reacting to external circumstances, proactive individuals anticipate challenges and make conscious decisions. Covey illustrates how proactivity empowers you to shape your future, fostering initiative and resilience in both personal and professional spheres, setting the stage for effective living.' },
+                        { heading: 'Defining Your Vision', content: 'The habit of beginning with the end in mind encourages defining a clear vision for your life. Covey advises creating a personal mission statement to align daily actions with long-term goals. By visualizing your desired outcomes—whether in career, relationships, or personal growth—you can prioritize decisions that lead to meaningful results. This habit fosters purposeful living, ensuring your efforts are directed toward what truly matters to you.' },
+                        { heading: 'Prioritizing Effectively', content: 'Putting first things first focuses on effective time management by prioritizing tasks based on importance, not urgency. Covey’s Time Management Matrix helps distinguish between important goals (e.g., planning, relationship-building) and urgent distractions. By organizing your life around key priorities, you achieve balance and progress toward your vision, making deliberate choices that align with your mission and long-term objectives.' },
+                        { heading: 'Seeking Mutual Benefit', content: 'Thinking win-win promotes a mindset of mutual benefit in relationships. Covey explains that effective collaboration arises from seeking solutions where all parties gain value, fostering trust and cooperation. Whether in business negotiations or personal interactions, this habit encourages empathy and creativity to find outcomes that satisfy everyone, building stronger, more sustainable relationships over time.' },
+                        { heading: 'Empathetic Communication', content: 'Seeking first to understand, then to be understood emphasizes empathetic listening. Covey advocates truly understanding others’ perspectives before expressing your own, which builds trust and opens effective communication. By listening without judgment and reflecting others’ feelings, you create deeper connections and resolve conflicts more effectively, enhancing both personal and professional relationships.' },
+                        { heading: 'Collaborative Innovation', content: 'Synergizing highlights the power of collaborative creativity. By combining individual strengths, teams can achieve results greater than the sum of their parts. Covey illustrates how diverse perspectives, when united through trust and open communication, lead to innovative solutions. This habit encourages valuing differences and leveraging them to create extraordinary outcomes in group settings.' },
+                        { heading: 'Self-Renewal', content: 'Sharpening the saw focuses on self-renewal across physical, mental, emotional, and spiritual dimensions. Covey stresses the importance of regular self-care—exercise, learning, reflection, and connection—to maintain peak performance. By investing in yourself, you sustain the energy and clarity needed to practice the other habits effectively, ensuring long-term growth and balance.' },
+                        { heading: 'Personal Leadership', content: 'Covey emphasizes personal leadership as the foundation of effectiveness. By aligning your actions with core principles and values, you gain clarity and direction. This involves regularly revisiting your mission statement and making decisions that reflect your deepest priorities, empowering you to lead yourself and others with integrity and purpose.' },
+                        { heading: 'Building Trust', content: 'Building trust is central to effective relationships. Covey’s Emotional Bank Account concept illustrates how small acts of kindness, honesty, and respect build trust over time. Withdrawals, like dishonesty or neglect, deplete trust, so consistent positive actions are essential for strong interpersonal connections in both personal and professional contexts.' },
+                        { heading: 'Balancing Effectiveness', content: 'Balancing personal and professional effectiveness requires integrating all seven habits. Covey explains that true success comes from aligning your habits with principles like integrity, empathy, and collaboration. By consistently applying these habits, you create a life of impact, achieving goals while maintaining meaningful relationships and personal well-being.' }
+                    ],
+                    quiz: [
+                        { question: 'Which habit emphasizes taking responsibility for your actions and choices?', options: ['Prioritizing tasks', 'Taking responsibility', 'Collaborating with others', 'Defining goals'], answer: 'Taking responsibility' },
+                        { question: 'What habit encourages creating a personal mission statement to align actions with goals?', options: ['Clear vision and goals', 'Empathetic listening', 'Mutual benefit', 'Self-renewal'], answer: 'Clear vision and goals' },
+                        { question: 'Which habit uses the Time Management Matrix to focus on important tasks?', options: ['Collaborative innovation', 'Prioritizing effectively', 'Building trust', 'Taking responsibility'], answer: 'Prioritizing effectively' },
+                        { question: 'What habit promotes seeking solutions where all parties benefit?', options: ['Seeking mutual benefit', 'Self-renewal', 'Empathetic communication', 'Personal leadership'], answer: 'Seeking mutual benefit' },
+                        { question: 'Which habit focuses on listening empathetically to understand others before speaking?', options: ['Collaborative innovation', 'Empathetic communication', 'Prioritizing effectively', 'Defining your vision'], answer: 'Empathetic communication' },
+                        { question: 'What habit leverages diverse perspectives for innovative team outcomes?', options: ['Self-renewal', 'Collaborative innovation', 'Building trust', 'Seeking mutual benefit'], answer: 'Collaborative innovation' },
+                        { question: 'Which habit involves self-care across physical, mental, and emotional dimensions?', options: ['Personal leadership', 'Self-renewal', 'Empathetic communication', 'Prioritizing effectively'], answer: 'Self-renewal' },
+                        { question: 'What habit aligns actions with core principles and values?', options: ['Personal leadership', 'Collaborative innovation', 'Seeking mutual benefit', 'Building trust'], answer: 'Personal leadership' },
+                        { question: 'Which habit uses the Emotional Bank Account to foster relationships?', options: ['Defining your vision', 'Building trust', 'Self-renewal', 'Prioritizing effectively'], answer: 'Building trust' },
+                        { question: 'What habit integrates principles like integrity and empathy for success?', options: ['Balancing effectiveness', 'Collaborative innovation', 'Taking responsibility', 'Empathetic communication'], answer: 'Balancing effectiveness' },
+                        { question: 'Which habit helps you focus on long-term goals over urgent distractions?', options: ['Seeking mutual benefit', 'Prioritizing effectively', 'Building trust', 'Self-renewal'], answer: 'Prioritizing effectively' },
+                        { question: 'What habit fosters trust through small acts of kindness and honesty?', options: ['Personal leadership', 'Building trust', 'Collaborative innovation', 'Defining your vision'], answer: 'Building trust' },
+                        { question: 'Which habit encourages valuing differences in team settings?', options: ['Collaborative innovation', 'Self-renewal', 'Empathetic communication', 'Taking responsibility'], answer: 'Collaborative innovation' },
+                        { question: 'What habit reduces conflict by understanding others’ perspectives first?', options: ['Seeking mutual benefit', 'Empathetic communication', 'Balancing effectiveness', 'Personal leadership'], answer: 'Empathetic communication' },
+                        { question: 'Which habit sustains energy through regular self-care practices?', options: ['Self-renewal', 'Prioritizing effectively', 'Building trust', 'Collaborative innovation'], answer: 'Self-renewal' },
+                        { question: 'What habit empowers you to shape your future through proactive choices?', options: ['Defining your vision', 'Taking responsibility', 'Seeking mutual benefit', 'Balancing effectiveness'], answer: 'Taking responsibility' },
+                        { question: 'Which habit ensures actions reflect your deepest priorities?', options: ['Personal leadership', 'Empathetic communication', 'Collaborative innovation', 'Building trust'], answer: 'Personal leadership' },
+                        { question: 'What habit creates a vision for purposeful living?', options: ['Self-renewal', 'Defining your vision', 'Prioritizing effectively', 'Seeking mutual benefit'], answer: 'Defining your vision' },
+                        { question: 'Which habit fosters cooperation in negotiations?', options: ['Balancing effectiveness', 'Seeking mutual benefit', 'Taking responsibility', 'Empathetic communication'], answer: 'Seeking mutual benefit' },
+                        { question: 'What habit achieves greater results through team synergy?', options: ['Collaborative innovation', 'Building trust', 'Self-renewal', 'Personal leadership'], answer: 'Collaborative innovation' }
+                    ]
+                },
+                'win-friends': {
+                    title: 'How to Win Friends and Influence People',
+                    category: 'Career Growth',
+                    thumbnail: '3a.png',
+                    summaries: [
+                        { heading: 'Handling People Effectively', content: 'Dale Carnegie’s *How to Win Friends and Influence People* offers timeless techniques for handling people effectively. The core principle is to avoid criticism, condemnation, or complaints, as they often lead to defensiveness. Instead, Carnegie advocates showing genuine appreciation and understanding to build rapport. By approaching interactions with empathy and respect, you create positive relationships that foster cooperation and trust, essential for personal and professional success.' },
+                        { heading: 'Making People Like You', content: 'Carnegie outlines six ways to make people like you, starting with showing genuine interest in others. By asking thoughtful questions and listening attentively, you make others feel valued. Smiling, remembering names, and being a good listener further enhance likability. These simple yet powerful actions create an emotional connection, making people more receptive to your ideas and building lasting bonds.' },
+                        { heading: 'Winning People’s Minds', content: 'To win people to your way of thinking, Carnegie advises avoiding arguments, as they rarely change minds. Instead, respect others’ opinions and acknowledge their perspectives. By presenting your ideas as additions to theirs and appealing to their interests, you persuade more effectively. This approach fosters collaboration and minimizes resistance, ensuring your influence is both positive and impactful.' },
+                        { heading: 'Avoiding Conflicts', content: 'Avoiding arguments is a key strategy for maintaining positive relationships. Carnegie suggests admitting when you’re wrong quickly and agreeing with others whenever possible to defuse tension. By staying calm and focusing on common ground, you prevent conflicts from escalating, preserving trust and goodwill in both personal and professional interactions.' },
+                        { heading: 'Active Listening', content: 'Listening actively is central to Carnegie’s philosophy. By letting others talk about themselves and showing genuine curiosity, you make them feel important. This builds trust and opens the door to deeper connections. Carnegie emphasizes that being a good listener is more valuable than being a great talker, as it fosters mutual respect and understanding.' },
+                        { heading: 'Building Importance', content: 'Making people feel important is a cornerstone of influence. Carnegie advises giving sincere praise and recognizing others’ contributions. Simple acts like acknowledging someone’s efforts or celebrating their achievements boost their self-esteem and loyalty. This approach creates a positive atmosphere, encouraging others to engage with you willingly and enthusiastically.' },
+                        { heading: 'Constructive Criticism', content: 'When offering criticism, Carnegie suggests doing so indirectly and with kindness. Instead of pointing out flaws, frame suggestions as opportunities for improvement. For example, praising what’s done well before suggesting changes softens the impact. This method ensures feedback is constructive, maintaining goodwill while encouraging positive change.' },
+                        { heading: 'Encouraging Growth', content: 'Encouraging others involves giving praise generously and sparingly pointing out faults. Carnegie explains that recognizing small achievements motivates people to improve further. By focusing on strengths and expressing confidence in others’ abilities, you inspire them to strive for excellence, fostering a culture of growth and positivity in any setting.' },
+                        { heading: 'Leading with Influence', content: 'Effective leadership, per Carnegie, relies on influence rather than authority. By inspiring enthusiasm, setting clear expectations, and encouraging participation, leaders can motivate teams without coercion. Asking questions instead of giving orders fosters ownership and collaboration, making people feel valued and empowered to contribute to shared goals.' },
+                        { heading: 'Universal Application', content: 'Carnegie’s principles apply universally to professional and personal life. Whether negotiating a deal, resolving a family dispute, or building a team, his techniques—empathy, appreciation, and influence—create stronger relationships. By consistently applying these strategies, you can navigate social interactions with confidence, fostering trust and achieving lasting success.' }
+                    ],
+                    quiz: [
+                        { question: 'What is a core principle for handling people?', options: ['Criticize often', 'Show genuine appreciation', 'Condemn mistakes', 'Ignore feelings'], answer: 'Show genuine appreciation' },
+                        { question: 'What is one way to make people like you?', options: ['Interrupt often', 'Show genuine interest', 'Focus on yourself', 'Avoid smiling'], answer: 'Show genuine interest' },
+                        { question: 'How should you win people to your thinking?', options: ['Argue forcefully', 'Respect their opinions', 'Ignore their views', 'Demand agreement'], answer: 'Respect their opinions' },
+                        { question: 'How can you avoid arguments?', options: ['Stay calm and agree', 'Escalate tension', 'Criticize directly', 'Interrupt often'], answer: 'Stay calm and agree' },
+                        { question: 'Why is listening important?', options: ['Makes you seem superior', 'Builds trust and connection', 'Reduces influence', 'Avoids interaction'], answer: 'Builds trust and connection' },
+                        { question: 'How can you make people feel important?', options: ['Give sincere praise', 'Point out faults', 'Ignore contributions', 'Demand respect'], answer: 'Give sincere praise' },
+                        { question: 'How should you offer criticism?', options: ['Directly', 'With kindness', 'By condemning', 'Avoid it entirely'], answer: 'With kindness' },
+                        { question: 'What motivates people to improve?', options: ['Criticism', 'Sincere praise', 'Ignoring efforts', 'Setting strict rules'], answer: 'Sincere praise' },
+                        { question: 'What defines Carnegie’s leadership?', options: ['Authority', 'Influence', 'Control', 'Dominance'], answer: 'Influence' },
+                        { question: 'Where do Carnegie’s principles apply?', options: ['Only professional life', 'Only personal life', 'Both personal and professional', 'Neither'], answer: 'Both personal and professional' },
+                        { question: 'What should you avoid when influencing?', options: ['Listening', 'Arguments', 'Smiling', 'Appreciation'], answer: 'Arguments' },
+                        { question: 'What is a key to being likable?', options: ['Talking about yourself', 'Remembering names', 'Criticizing others', 'Avoiding smiles'], answer: 'Remembering names' },
+                        { question: 'How should you frame suggestions?', options: ['As criticism', 'As opportunities', 'As demands', 'As complaints'], answer: 'As opportunities' },
+                        { question: 'What fosters collaboration in leadership?', options: ['Giving orders', 'Asking questions', 'Ignoring input', 'Setting strict rules'], answer: 'Asking questions' },
+                        { question: 'What builds stronger relationships?', options: ['Condemnation', 'Empathy and appreciation', 'Criticism', 'Avoiding interaction'], answer: 'Empathy and appreciation' },
+                        { question: 'What should you do if you’re wrong?', options: ['Defend yourself', 'Admit it quickly', 'Ignore it', 'Blame others'], answer: 'Admit it quickly' },
+                        { question: 'What makes people receptive to ideas?', options: ['Arguing', 'Showing interest', 'Demanding agreement', 'Ignoring opinions'], answer: 'Showing interest' },
+                        { question: 'What is the value of a good listener?', options: ['Seems superior', 'Builds trust', 'Reduces influence', 'Avoids connection'], answer: 'Builds trust' },
+                        { question: 'How should praise be given?', options: ['Sparingly', 'Generously', 'Never', 'Critically'], answer: 'Generously' },
+                        { question: 'What creates enthusiasm in teams?', options: ['Strict orders', 'Inspiring leadership', 'Ignoring contributions', 'Criticism'], answer: 'Inspiring leadership' }
+                    ]
+                },
+                'self-confidence': {
+                    title: 'The Power of Self-Confidence',
+                    category: 'Self-Belief and Belief',
+                    thumbnail: '4a.png',
+                    summaries: [
+                        { heading: 'Foundation of Success', content: 'Brian Tracy’s *The Power of Self-Confidence* underscores that self-confidence is the foundation of personal and professional success. By believing in your abilities, you unlock the courage to take risks and pursue goals. Tracy explains that confidence is a skill developed through practice, not an innate trait. By setting clear goals and taking action, you build a cycle of success that reinforces self-belief, enabling you to overcome obstacles and achieve your potential.' },
+                        { heading: 'Overcoming Fear', content: 'Fear and self-doubt are major barriers to success. Tracy teaches that confronting fears directly—through action—diminishes their power. By stepping out of your comfort zone, such as speaking up in a meeting, you gradually desensitize yourself to fear. This process builds resilience and confidence, allowing you to tackle bigger challenges with assurance and clarity over time.' },
+                        { heading: 'Positive Self-Talk', content: 'Positive self-talk is a powerful tool for building confidence. Tracy emphasizes replacing negative thoughts (e.g., “I can’t do this”) with affirmations like “I am capable and prepared.” By consistently reinforcing positive beliefs, you rewire your mindset to focus on strengths, boosting self-esteem and enabling you to approach tasks with optimism and determination.' },
+                        { heading: 'Achieving Small Goals', content: 'Setting and achieving small goals creates a foundation for confidence. Tracy advises breaking large objectives into manageable steps, celebrating each success. For example, completing a small project on time builds momentum, reinforcing your belief in your abilities. This approach ensures steady progress and fosters a sense of accomplishment that fuels further growth.' },
+                        { heading: 'Visualization Techniques', content: 'Visualization is a key strategy for confidence. Tracy suggests mentally rehearsing successful outcomes, such as delivering a flawless presentation. By vividly imagining positive scenarios, you prepare your mind for success, reducing anxiety and enhancing performance. Regular visualization strengthens your belief in your capabilities, making confident actions feel natural.' },
+                        { heading: 'Handling Criticism', content: 'Handling criticism and rejection with resilience is crucial. Tracy advises viewing feedback as a learning opportunity rather than a personal attack. By focusing on constructive elements and maintaining a growth mindset, you can improve without losing confidence, turning setbacks into stepping stones for future success in any endeavor.' },
+                        { heading: 'Power of Preparation', content: 'Preparation is the bedrock of confidence. Tracy emphasizes that thorough preparation—whether for a speech, exam, or project—eliminates uncertainty and boosts self-assurance. By investing time in planning and practice, you equip yourself with the knowledge and skills needed to perform effectively, reducing fear and enhancing performance.' },
+                        { heading: 'Owning Your Confidence', content: 'Taking responsibility for your confidence means owning your growth. Tracy encourages proactive steps, like seeking feedback or learning new skills, to build self-belief. By recognizing that confidence is within your control, you empower yourself to overcome limitations and pursue ambitious goals with determination and clarity.' },
+                        { heading: 'Building Through Small Wins', content: 'Small wins build confidence over time. Tracy suggests starting with achievable tasks, like organizing your workspace, to create a positive feedback loop. Each success reinforces your belief in your abilities, making larger challenges feel less daunting. This incremental approach ensures steady growth in confidence and competence.' },
+                        { heading: 'Confidence in Leadership', content: 'Applying confidence in leadership and relationships involves projecting assurance and empathy. Tracy explains that confident leaders inspire trust by communicating clearly and supporting their teams. Similarly, confident individuals build stronger relationships by expressing themselves authentically and handling conflicts with poise, fostering mutual respect and collaboration.' }
+                    ],
+                    quiz: [
+                        { question: 'What is the foundation of success in *The Power of Self-Confidence*?', options: ['Wealth', 'Self-confidence', 'External validation', 'Avoiding risks'], answer: 'Self-confidence' },
+                        { question: 'How can you overcome fear?', options: ['Avoid action', 'Take action', 'Ignore it', 'Dwell on it'], answer: 'Take action' },
+                        { question: 'What is a key to positive self-talk?', options: ['Negative affirmations', 'Focusing on weaknesses', 'Positive affirmations', 'Avoiding thoughts'], answer: 'Positive affirmations' },
+                        { question: 'Why are small goals important?', options: ['They create momentum', 'They are complex', 'They reduce effort', 'They avoid success'], answer: 'They create momentum' },
+                        { question: 'What does visualization help with?', options: ['Increasing anxiety', 'Preparing for success', 'Avoiding action', 'Focusing on failure'], answer: 'Preparing for success' },
+                        { question: 'How should you handle criticism?', options: ['As a personal attack', 'As a learning opportunity', 'By ignoring it', 'With defensiveness'], answer: 'As a learning opportunity' },
+                        { question: 'What is the role of preparation?', options: ['Increases uncertainty', 'Boosts confidence', 'Reduces effort', 'Avoids success'], answer: 'Boosts confidence' },
+                        { question: 'Who is responsible for your confidence?', options: ['Others', 'Yourself', 'Circumstances', 'Luck'], answer: 'Yourself' },
+                        { question: 'What do small wins achieve?', options: ['Reduce confidence', 'Build confidence', 'Increase fear', 'Avoid progress'], answer: 'Build confidence' },
+                        { question: 'How does confidence impact leadership?', options: ['Reduces trust', 'Inspires trust', 'Avoids collaboration', 'Increases conflict'], answer: 'Inspires trust' },
+                        { question: 'What is confidence according to Tracy?', options: ['An innate trait', 'A skill', 'A gift', 'A weakness'], answer: 'A skill' },
+                        { question: 'How can you desensitize yourself to fear?', options: ['Avoid challenges', 'Step out of comfort zone', 'Focus on failure', 'Ignore goals'], answer: 'Step out of comfort zone' },
+                        { question: 'What should you replace negative thoughts with?', options: ['Doubts', 'Affirmations', 'Criticism', 'Excuses'], answer: 'Affirmations' },
+                        { question: 'What creates a positive feedback loop?', options: ['Large failures', 'Small successes', 'Avoiding tasks', 'Ignoring goals'], answer: 'Small successes' },
+                        { question: 'What does visualization reduce?', options: ['Confidence', 'Anxiety', 'Preparation', 'Effort'], answer: 'Anxiety' },
+                        { question: 'How should you view rejection?', options: ['As failure', 'As growth', 'As permanent', 'As personal'], answer: 'As growth' },
+                        { question: 'What does preparation eliminate?', options: ['Effort', 'Uncertainty', 'Success', 'Goals'], answer: 'Uncertainty' },
+                        { question: 'What is a proactive step for confidence?', options: ['Avoiding feedback', 'Seeking feedback', 'Ignoring skills', 'Focusing on limitations'], answer: 'Seeking feedback' },
+                        { question: 'How do confident leaders build relationships?', options: ['With authority', 'With empathy', 'With avoidance', 'With criticism'], answer: 'With empathy' },
+                        { question: 'What makes challenges less daunting?', options: ['Avoiding action', 'Small wins', 'Large goals', 'Ignoring progress'], answer: 'Small wins' }
+                    ]
+                },
+                'badass': {
+                    title: 'You Are a Badass',
+                    category: 'Self-Belief and Belief',
+                    thumbnail: '5a.png',
+                    summaries: [
+                        { heading: 'Embracing Inner Power', content: 'Jen Sincero’s *You Are a Badass* inspires you to embrace your inner power to live an extraordinary life. By recognizing your unique strengths and rejecting self-imposed limitations, you can pursue your dreams with confidence. Sincero combines humor and practical advice to motivate you to take bold actions, shift your mindset, and create a life aligned with your true potential, starting with self-belief.' },
+                        { heading: 'Overcoming Self-Sabotage', content: 'Overcoming self-sabotaging beliefs is critical to success. Sincero explains that negative thought patterns, like fear of failure or unworthiness, hold you back. By identifying and challenging these beliefs, you can replace them with empowering ones. This process involves reframing your self-perception, focusing on your strengths, and taking responsibility for your happiness and achievements.' },
+                        { heading: 'Power of Gratitude', content: 'Gratitude transforms your perspective and builds self-belief. Sincero emphasizes that appreciating what you have shifts your focus from scarcity to abundance, boosting confidence. Daily gratitude practices, like journaling or reflecting on positive moments, rewire your brain to see opportunities, making it easier to pursue goals with optimism and resilience in any challenging situation.' },
+                        { heading: 'Acting Despite Fear', content: 'Taking action despite fear is a cornerstone of Sincero’s philosophy. She encourages embracing discomfort as a sign of growth, whether it’s starting a business or speaking publicly. By acting even when afraid, you build confidence through experience, proving to yourself that you’re capable of overcoming obstacles and achieving your aspirations.' },
+                        { heading: 'Rewriting Your Story', content: 'Rewriting your personal story empowers you to redefine your life. Sincero advises letting go of old narratives—like past failures or limiting labels—and crafting a new story that reflects your potential. By consciously choosing empowering beliefs, you align your actions with your goals, creating a path to success driven by self-belief and purpose.' },
+                        { heading: 'Positive Thinking', content: 'Positive thinking and affirmations shape your reality. Sincero suggests using affirmations like “I am unstoppable” to reinforce confidence. By consistently focusing on positive outcomes and rejecting negative self-talk, you train your mind to expect success, making it easier to take bold steps and persist through challenges in pursuit of your goals.' },
+                        { heading: 'Supportive Relationships', content: 'Surrounding yourself with supportive people is essential for growth. Sincero advises seeking out individuals who uplift and inspire you, while distancing yourself from negativity. A positive support network reinforces your self-belief, provides encouragement, and holds you accountable, creating an environment where you can thrive and pursue your dreams fearlessly.' },
+                        { heading: 'Setting Big Goals', content: 'Setting big goals requires believing in your potential. Sincero encourages dreaming big and breaking goals into actionable steps. By focusing on the “why” behind your goals—such as personal fulfillment or impact—you stay motivated. This approach transforms ambitious dreams into achievable realities through consistent effort and unwavering self-belief.' },
+                        { heading: 'Letting Go of Perfectionism', content: 'Letting go of perfectionism frees you to take action. Sincero explains that waiting for perfect conditions or flawless execution stalls progress. By embracing “good enough” and learning from mistakes, you move forward faster, building confidence through real-world experience rather than being paralyzed by unrealistic expectations.' },
+                        { heading: 'Living Authentically', content: 'Living authentically boosts confidence and fulfillment. Sincero urges you to embrace your true self, quirks and all, and align your life with your values. By expressing yourself honestly and pursuing what lights you up, you cultivate a sense of purpose and confidence that radiates in your relationships, career, and personal growth.' }
+                    ],
+                    quiz: [
+                        { question: 'What does *You Are a Badass* inspire you to embrace?', options: ['Fear', 'Inner power', 'Limitations', 'Perfectionism'], answer: 'Inner power' },
+                        { question: 'What holds you back according to Sincero?', options: ['Self-sabotaging beliefs', 'Supportive people', 'Big goals', 'Gratitude'], answer: 'Self-sabotaging beliefs' },
+                        { question: 'How does gratitude help self-belief?', options: ['Increases scarcity', 'Shifts to abundance', 'Reduces effort', 'Avoids goals'], answer: 'Shifts to abundance' },
+                        { question: 'What should you do despite fear?', options: ['Avoid action', 'Take action', 'Dwell on it', 'Ignore it'], answer: 'Take action' },
+                        { question: 'What does rewriting your story involve?', options: ['Keeping old narratives', 'Empowering beliefs', 'Focusing on failure', 'Avoiding change'], answer: 'Empowering beliefs' },
+                        { question: 'What is the role of affirmations?', options: ['Increase doubt', 'Reinforce confidence', 'Avoid action', 'Focus on failure'], answer: 'Reinforce confidence' },
+                        { question: 'Who should you surround yourself with?', options: ['Negative people', 'Supportive people', 'No one', 'Critics'], answer: 'Supportive people' },
+                        { question: 'How should you approach big goals?', options: ['Avoid them', 'Break into actionable steps', 'Focus on perfection', 'Ignore the why'], answer: 'Break into actionable steps' },
+                        { question: 'Why should you let go of perfectionism?', options: ['To stall progress', 'To take action', 'To increase fear', 'To avoid mistakes'], answer: 'To take action' },
+                        { question: 'What does living authentically boost?', options: ['Fear', 'Confidence and fulfillment', 'Perfectionism', 'Limitations'], answer: 'Confidence and fulfillment' },
+                        { question: 'What is a sign of growth per Sincero?', options: ['Comfort', 'Discomfort', 'Avoidance', 'Perfection'], answer: 'Discomfort' },
+                        { question: 'How can you rewire your mindset?', options: ['Focus on scarcity', 'Practice gratitude', 'Avoid goals', 'Dwell on failure'], answer: 'Practice gratitude' },
+                        { question: 'What does Sincero suggest for confidence?', options: ['Negative self-talk', 'Positive affirmations', 'Avoiding action', 'Focusing on flaws'], answer: 'Positive affirmations' },
+                        { question: 'Why is a support network important?', options: ['Increases negativity', 'Reinforces self-belief', 'Reduces goals', 'Avoids accountability'], answer: 'Reinforces self-belief' },
+                        { question: 'What motivates big goals?', options: ['Perfectionism', 'The why behind goals', 'Avoiding effort', 'Small failures'], answer: 'The why behind goals' },
+                        { question: 'How should you view mistakes?', options: ['As failures', 'As learning opportunities', 'As permanent', 'As personal'], answer: 'As learning opportunities' },
+                        { question: 'What does embracing your true self do?', options: ['Reduces purpose', 'Aligns with values', 'Increases fear', 'Avoids growth'], answer: 'Aligns with values' },
+                        { question: 'What should you reject to succeed?', options: ['Strengths', 'Self-imposed limitations', 'Goals', 'Support'], answer: 'Self-imposed limitations' },
+                        { question: 'What creates an extraordinary life?', options: ['Limiting beliefs', 'Embracing inner power', 'Avoiding action', 'Focusing on fear'], answer: 'Embracing inner power' },
+                        { question: 'What transforms your perspective?', options: ['Gratitude', 'Fear', 'Perfectionism', 'Negativity'], answer: 'Gratitude' }
+                    ]
+                }
+
+            };
+
+            // State variables
+            let currentUser = null;
+            let currentBook = null;
+            let currentSlide = 0;
+            let currentQuestion = 0;
+            let userAnswers = [];
+            let quizStartTime = null;
+            let summaryStartTime = null;
+            let summaryTimer = null;
+            let quizTimer = null;
+
+            // Page navigation
+            function showPage(pageId) {
+                document.querySelectorAll('.container').forEach(page => page.classList.add('hidden'));
+                document.getElementById(pageId).classList.remove('hidden');
+                if (pageId === 'summaryPage') startSummaryStopwatch();
+                if (pageId === 'quizPage') startQuizStopwatch();
+                if (pageId !== 'summaryPage') clearInterval(summaryTimer);
+                if (pageId !== 'quizPage') clearInterval(quizTimer);
+            }
+
+            // Login and Registration
+            document.getElementById('loginBtn').addEventListener('click', () => {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    console.log('Login successful:', user);
+                    showPage('libraryPage');
+                } else {
+                    const existingUser = users.find(u => u.email === email);
+                    if (existingUser) {
+                        alert('Incorrect password or user already registered with this email.');
+                    } else {
+                        showPage('registrationPage');
+                    }
+                }
+            });
+
+            document.getElementById('registerBtn').addEventListener('click', () => {
+                const email = document.getElementById('regEmail').value;
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                if (users.find(u => u.email === email)) {
+                    alert('User already registered with this email. Please login.');
+                    showPage('loginPage');
+                    return;
+                }
+                currentUser = {
+                    fullName: document.getElementById('fullName').value,
+                    designation: document.getElementById('designation').value,
+                    team: document.getElementById('team').value,
+                    baseCity: document.getElementById('baseCity').value,
+                    date: document.getElementById('date').value,
+                    email: email,
+                    cellNumber: document.getElementById('cellNumber').value,
+                    password: document.getElementById('loginPassword').value
+                };
+                users.push(currentUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                console.log('Registration successful:', currentUser);
+                showPage('libraryPage');
+            });
+
+            // Library search
+            document.getElementById('searchBar').addEventListener('input', (e) => {
+                const search = e.target.value.toLowerCase();
+                document.querySelectorAll('.book').forEach(book => {
+                    const title = book.querySelector('h3').textContent.toLowerCase();
+                    book.style.display = title.includes(search) ? 'block' : 'none';
+                });
+            });
+
+            // Book selection
+            document.querySelectorAll('.book').forEach(book => {
+                book.addEventListener('click', () => {
+                    currentBook = books[book.dataset.book];
+                    if (!currentBook.summaries) {
+                        alert('Summaries and quizzes for this book are coming soon!');
+                        return;
+                    }
+                    currentSlide = 0;
+                    document.getElementById('summaryTitle').textContent = currentBook.title;
+                    showSummarySlide();
+                    showPage('summaryPage');
+                    anime({
+                        targets: '#summarySlides',
+                        opacity: [0, 1],
+                        translateY: [50, 0],
+                        easing: 'easeOutQuad',
+                        duration: 500
+                    });
+                });
+            });
+
+            // Summary navigation
+            function showSummarySlide() {
+                const slides = currentBook.summaries;
+                document.getElementById('summarySlides').innerHTML = `
+                    <h2 class="text-2xl font-bold mb-2">${slides[currentSlide].heading}</h2>
+                    <p>${slides[currentSlide].content}</p>
+                `;
+                document.getElementById('quizBtn').classList.toggle('hidden', currentSlide < slides.length - 1);
+                document.getElementById('prevSlideBtn').disabled = currentSlide === 0;
+                document.getElementById('nextSlideBtn').disabled = currentSlide === slides.length - 1;
+                document.getElementById('firstSlideBtn').disabled = currentSlide === 0;
+                document.getElementById('lastSlideBtn').disabled = currentSlide === slides.length - 1;
+            }
+
+            document.getElementById('firstSlideBtn').addEventListener('click', () => {
+                currentSlide = 0;
+                showSummarySlide();
+            });
+
+            document.getElementById('prevSlideBtn').addEventListener('click', () => {
+                if (currentSlide > 0) currentSlide--;
+                showSummarySlide();
+            });
+
+            document.getElementById('nextSlideBtn').addEventListener('click', () => {
+                if (currentSlide < currentBook.summaries.length - 1) currentSlide++;
+                showSummarySlide();
+            });
+
+            document.getElementById('lastSlideBtn').addEventListener('click', () => {
+                currentSlide = currentBook.summaries.length - 1;
+                showSummarySlide();
+            });
+
+            document.getElementById('homeBtn').addEventListener('click', () => showPage('libraryPage'));
+            document.getElementById('scoreHomeBtn').addEventListener('click', () => showPage('libraryPage'));
+            document.getElementById('answerHomeBtn').addEventListener('click', () => showPage('libraryPage'));
+
+            // Stopwatch
+            function startSummaryStopwatch() {
+                summaryStartTime = Date.now();
+                clearInterval(summaryTimer);
+                summaryTimer = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - summaryStartTime) / 1000);
+                    const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                    const seconds = (elapsed % 60).toString().padStart(2, '0');
+                    document.getElementById('stopwatch').textContent = `Time: ${minutes}:${seconds}`;
+                }, 1000);
+            }
+
+            function startQuizStopwatch() {
+                quizStartTime = Date.now();
+                clearInterval(quizTimer);
+                quizTimer = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+                    const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                    const seconds = (elapsed % 60).toString().padStart(2, '0');
+                    document.getElementById('quizStopwatch').textContent = `Time: ${minutes}:${seconds}`;
+                }, 1000);
+            }
+
+            // Quiz navigation
+            document.getElementById('quizBtn').addEventListener('click', () => {
+                currentQuestion = 0;
+                userAnswers = [];
+                showQuizQuestion();
+                showPage('quizPage');
+            });
+
+            function showQuizQuestion() {
+        const question = currentBook.quiz[currentQuestion];
+        document.getElementById('quizQuestion').innerHTML = `
+            <h2 class="text-lg sm:text-xl font-semibold mb-4">Question ${currentQuestion + 1}</h2>
+            <p class="mb-4 text-sm sm:text-base">${question.question}</p>
+            ${question.options.map((option, i) => `
+                <label class="block mb-2 text-sm sm:text-base">
+                    <input type="radio" name="answer" value="${option}" class="mr-2 transform scale-125 sm:scale-150">
+                    ${option}
+                </label>
+            `).join('')}
+            <div class="flex flex-col sm:flex-row justify-between mt-4 gap-2 sm:gap-4">
+                <button id="prevQuestionBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500 ${currentQuestion === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+                <button id="nextQuestionBtn" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-500 hover:to-blue-500 ${currentQuestion === currentBook.quiz.length - 1 ? 'hidden' : ''}">Next</button>
+            </div>
+        `;
+        document.querySelectorAll('input[name="answer"]').forEach(input => {
+            input.addEventListener('change', () => {
+                userAnswers[currentQuestion] = input.value;
+                setTimeout(() => {
+                    if (currentQuestion < currentBook.quiz.length - 1) {
+                        currentQuestion++;
+                        showQuizQuestion();
+                    } else {
+                        showScoreCard();
+                        showPage('scorePage');
+                        clearInterval(quizTimer);
+                    }
+                }, 300); // Brief delay for user feedback
+            });
+            if (userAnswers[currentQuestion] === input.value) input.checked = true;
+        });
+
+        document.getElementById('prevQuestionBtn').addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuizQuestion();
+            }
+        });
+
+        if (currentQuestion === currentBook.quiz.length - 1) {
+            document.getElementById('nextQuestionBtn').addEventListener('click', () => {
+                if (!userAnswers[currentQuestion]) {
+                    alert('Please select an answer before proceeding.');
+                    return;
+                }
+                showScoreCard();
+                showPage('scorePage');
+                clearInterval(quizTimer);
+            });
+        }
+    }
+
+            // Score card
+            function showScoreCard() {
+        const correctAnswers = currentBook.quiz.reduce((score, q, i) => score + (userAnswers[i] === q.answer ? 1 : 0), 0);
+        const percentage = (correctAnswers / currentBook.quiz.length) * 100;
+        let grade = '';
+        let encouragement = '';
+        if (percentage >= 90) {
+            grade = 'A1';
+            encouragement = `Outstanding performance, ${currentUser.fullName}! Your mastery of the material is inspiring!`;
+        } else if (percentage >= 80) {
+            grade = 'A';
+            encouragement = `Excellent work, ${currentUser.fullName}! You’ve shown great understanding!`;
+        } else if (percentage >= 70) {
+            grade = 'B';
+            encouragement = `Great job, ${currentUser.fullName}! Keep practicing to reach the top!`;
+        } else if (percentage >= 60) {
+            grade = 'C';
+            encouragement = `Good effort, ${currentUser.fullName}! A bit more review will get you there!`;
+        } else if (percentage >= 50) {
+            grade = 'D';
+            encouragement = `You’re on your way, ${currentUser.fullName}! Revisit the summaries to boost your score!`;
+        } else {
+            grade = 'E';
+            encouragement = `Don’t give up, ${currentUser.fullName}! Review the material and try again!`;
+        }
+        const quizTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const summaryTime = Math.floor((Date.now() - summaryStartTime) / 1000);
+        const date = new Date().toLocaleDateString();
+        document.getElementById('scoreCard').innerHTML = `
+            <div class="rainbow-glow bg-white p-4 sm:p-8 rounded-lg shadow-xl">
+                <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-blue-600 animate-pulse">Score Card</h2>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Name: <span class="text-purple-600">${currentUser.fullName}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Designation: <span class="text-purple-600">${currentUser.designation}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Team: <span class="text-purple-600">${currentUser.team}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Base City: <span class="text-purple-600">${currentUser.baseCity}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Date: <span class="text-purple-600">${date}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Email: <span class="text-purple-600">${currentUser.email}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Cell Number: <span class="text-purple-600">${currentUser.cellNumber}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Book: <span class="text-purple-600">${currentBook.title}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Correct Answers: <span class="text-purple-600">${correctAnswers}/${currentBook.quiz.length}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Percentage: <span class="text-purple-600">${percentage.toFixed(2)}%</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Grade: <span class="text-purple-600">${grade}</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Time Spent on Summary: <span class="text-purple-600">${Math.floor(summaryTime / 60)}m ${summaryTime % 60}s</span></p>
+                <p class="text-sm sm:text-lg font-semibold mb-3 text-gray-800">Time Spent on Quiz: <span class="text-purple-600">${Math.floor(quizTime / 60)}m ${quizTime % 60}s</span></p>
+                <p class="text-lg sm:text-xl font-bold text-green-600 mt-4 animate-bounce">${encouragement}</p>
+            </div>
+        `;
+        anime({
+            targets: '#scoreCard .rainbow-glow',
+            opacity: [0, 1],
+            scale: [0.8, 1],
+            easing: 'easeOutElastic(1, .6)',
+            duration: 1000
+        });
+        anime({
+            targets: '#scoreCard p',
+            translateY: [20, 0],
+            opacity: [0, 1],
+            delay: anime.stagger(100),
+            easing: 'easeOutQuad',
+            duration: 500
+        });
+    }
+            // Answer review
+            document.getElementById('answerCheckBtn').addEventListener('click', () => {
+                document.getElementById('answerReview').innerHTML = currentBook.quiz.map((q, i) => `
+                    <div class="mb-4">
+                        <p class="font-semibold">Question ${i + 1}: ${q.question}</p>
+                        <p>Your Answer: ${userAnswers[i] || 'Not answered'}</p>
+                        <p>Correct Answer: ${q.answer}</p>
+                        <p class="${userAnswers[i] === q.answer ? 'text-green-600' : 'text-red-600'}">${userAnswers[i] === q.answer ? 'Correct' : 'Incorrect'}</p>
+                    </div>
+                `).join('');
+                showPage('answerCheckPage');
+            });
+
+            // PDF generation
+            document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const correctAnswers = currentBook.quiz.reduce((score, q, i) => score + (userAnswers[i] === q.answer ? 1 : 0), 0);
+                const percentage = (correctAnswers / currentBook.quiz.length) * 100;
+                let grade = '';
+                let encouragement = '';
+                if (percentage >= 90) {
+                    grade = 'A1';
+                    encouragement = 'Outstanding performance! Your mastery of the material is inspiring!';
+                } else if (percentage >= 80) {
+                    grade = 'A';
+                    encouragement = 'Excellent work! You’ve shown great understanding!';
+                } else if (percentage >= 70) {
+                    grade = 'B';
+                    encouragement = 'Great job! Keep practicing to reach the top!';
+                } else if (percentage >= 60) {
+                    grade = 'C';
+                    encouragement = 'Good effort! A bit more review will get you there!';
+                } else if (percentage >= 50) {
+                    grade = 'D';
+                    encouragement = 'You’re on your way! Revisit the summaries to boost your score!';
+                } else {
+                    grade = 'E';
+                    encouragement = 'Don’t give up! Review the material and try again!';
+                }
+                const quizTime = Math.floor((Date.now() - quizStartTime) / 1000);
+                const summaryTime = Math.floor((Date.now() - summaryStartTime) / 1000);
+                const date = new Date().toLocaleDateString();
+                doc.setFontSize(16);
+                doc.setTextColor(0, 0, 255);
+                doc.text('STAR vinsScore Card', 20, 20);
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Name: ${currentUser.fullName}`, 20, 40);
+                doc.text(`Designation: ${currentUser.designation}`, 20, 50);
+                doc.text(`Team: ${currentUser.team}`, 20, 60);
+                doc.text(`Base City: ${currentUser.baseCity}`, 20, 70);
+                doc.text(`Date: ${date}`, 20, 80);
+                doc.text(`Email: ${currentUser.email}`, 20, 90);
+                doc.text(`Cell Number: ${currentUser.cellNumber}`, 20, 100);
+                doc.text(`Book: ${currentBook.title}`, 20, 110);
+                doc.text(`Correct Answers: ${correctAnswers}/${currentBook.quiz.length}`, 20, 120);
+                doc.text(`Percentage: ${percentage.toFixed(2)}%`, 20, 130);
+                doc.text(`Grade: ${grade}`, 20, 140);
+                doc.text(`Summary Time: ${Math.floor(summaryTime / 60)}m ${summaryTime % 60}s`, 20, 150);
+                doc.text(`Quiz Time: ${Math.floor(quizTime / 60)}m ${quizTime % 60}s`, 20, 160);
+                doc.setFontSize(14);
+                doc.setTextColor(0, 128, 0);
+                doc.text(encouragement, 20, 180);
+                doc.save(`${currentUser.fullName}_ScoreCard.pdf`);
+            });
+        });
+    </script>
+</body>
+</html>
